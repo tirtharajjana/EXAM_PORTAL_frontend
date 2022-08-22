@@ -12,4 +12,21 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public user = {
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: ''
+  }
+
+  formSubmit() {
+    alert("Form Submitted");
+    if (this.user.username == "" || this.user.username == null) {
+      alert("Username is required");
+      return;
+    }
+  }
+
 }
