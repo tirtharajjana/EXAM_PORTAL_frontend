@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -21,12 +22,25 @@ export class SignupComponent implements OnInit {
     phone: ''
   }
 
+
   formSubmit() {
     alert("Form Submitted");
     if (this.user.username == "" || this.user.username == null) {
       alert("Username is required");
       return;
     }
+
+    this.userService.addUser(this.user).subscribe(
+      (data) => {
+        console.log(data);
+        alert("success")
+      },
+      (error) => {
+        console.log(error);
+        alert("error");
+      }
+    )
+
   }
 
 }
