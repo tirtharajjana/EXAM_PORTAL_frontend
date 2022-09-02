@@ -1,13 +1,24 @@
-<mat-toolbar color="accent" >
+<mat-toolbar color="accent">
   <a routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu_book</mat-icon>
   </a>
   <span>Exam Portal</span>
   <span class="example-spacer"></span>
-  <a routerLink="/login" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+
+  <a *ngIf="!loginService.isLoggedin()" routerLink="/login" mat-icon-button class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon">
     Login
   </a>
-  <a routerLink="/signup" mat-icon-button class="example-icon ml20 mr20" aria-label="Example icon-button with share icon">
+  <a *ngIf="!loginService.isLoggedin()" routerLink="/signup" mat-icon-button class="example-icon ml20 mr20"
+    aria-label="Example icon-button with share icon">
     Register
+  </a>
+  <a *ngIf="loginService.isLoggedin()" mat-icon-button class="example-icon ml20" style="margin-right: 50px;"
+    aria-label="Example icon-button with share icon">
+    {{loginService.getUser().username}}
+  </a>
+  <a *ngIf="loginService.isLoggedin()" (click)="logout()" mat-icon-button class="example-icon ml20 mr20"
+    aria-label="Example icon-button with share icon">
+    Logout
   </a>
 </mat-toolbar>

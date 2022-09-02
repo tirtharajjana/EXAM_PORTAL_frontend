@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { LoginService } from './../../services/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
 
 
 
-  constructor(private snack: MatSnackBar, private loginService: LoginService) { }
+  constructor(private snack: MatSnackBar, private loginService: LoginService, private router: Router) { }
 
   formSubmit() {
     // alert(JSON.stringify(this.loginData));
@@ -34,10 +35,31 @@ export class LoginComponent implements OnInit {
       (data: any) => {
         console.log(data);
         console.log("token generated");
+
+        //login
+        this.loginService.loginUser(data.token);
+        this.loginService.getCurrentUser().subscribe(
+          (user: any) => {
+            console.log(user);
+            this.loginService.setUser(user);
+            if (this.loginService.getUserRole() == 'ADMIN') {
+              //redirect ADMIN to admin page
+              this.router.navigate(['/admin']);
+              // window.location.href = '/admin';
+            } else if (this.loginService.getUserRole() == 'NORMAL') {
+              //redirect USER to user page
+              this.router.navigate(['/user-dashboard']);
+              // window.location.href = '/user-dashboard';
+            } else {
+              this.loginService.logoutUser();
+            }
+          }
+
+        )
       },
       (err) => {
         console.log(err);
-        this.snack.open('Something went wrong', '', { duration: 2000 });
+        this.snack.open('Invalid details!! Try again', '', { duration: 2000 });
       }
     )
 
