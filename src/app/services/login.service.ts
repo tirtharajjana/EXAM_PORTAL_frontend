@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import baseURL from './helper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+
+  public loginStatusSubject = new Subject<boolean>;
 
   constructor(private http: HttpClient) { }
 
@@ -22,6 +25,7 @@ export class LoginService {
   //login user: set token in local storage
   public loginUser(token: string) {
     localStorage.setItem('token', token);
+    // this.loginStatusSubject.next(true);
     return true;
   }
 
@@ -35,6 +39,7 @@ export class LoginService {
 
   //logout user: remove token from local storage
   public logoutUser() {
+
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     return true;
@@ -48,6 +53,7 @@ export class LoginService {
   //set user details in local storage
   public setUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
+    this.loginStatusSubject.next(true);
   }
 
   //get user details from local storage
@@ -55,7 +61,8 @@ export class LoginService {
     let userString = localStorage.getItem('user');
     if (userString) {
       return JSON.parse(userString);
-    } else {
+    }
+    else {
       this.logoutUser();
       return null;
     }

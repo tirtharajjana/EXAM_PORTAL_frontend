@@ -5,19 +5,20 @@
   <span>Exam Portal</span>
   <span class="example-spacer"></span>
 
-  <a *ngIf="!loginService.isLoggedin()" routerLink="/login" mat-icon-button class="example-icon favorite-icon"
+  <a *ngIf="!isUserLoggedIn" routerLink="/login" mat-icon-button class="example-icon favorite-icon"
     aria-label="Example icon-button with heart icon">
     Login
   </a>
-  <a *ngIf="!loginService.isLoggedin()" routerLink="/signup" mat-icon-button class="example-icon ml20 mr20"
+  <a *ngIf="!isUserLoggedIn" routerLink="/signup" mat-icon-button class="example-icon ml20 mr20"
     aria-label="Example icon-button with share icon">
     Register
   </a>
-  <a *ngIf="loginService.isLoggedin()" mat-icon-button class="example-icon ml20" style="margin-right: 50px;"
+
+  <a *ngIf="isUserLoggedIn && user " mat-icon-button class="example-icon ml20" style="margin-right: 50px;"
     aria-label="Example icon-button with share icon">
-    {{loginService.getUser().username}}
+    {{user.username}}
   </a>
-  <a *ngIf="loginService.isLoggedin()" (click)="logout()" mat-icon-button class="example-icon ml20 mr20"
+  <a *ngIf="isUserLoggedIn" (click)="logout()" mat-icon-button class="example-icon ml20 mr20"
     aria-label="Example icon-button with share icon">
     Logout
   </a>

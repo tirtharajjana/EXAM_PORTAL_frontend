@@ -7,15 +7,24 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  user:any = null;
+  isUserLoggedIn = false;
 
-  constructor(public loginService:LoginService) { }
+  constructor(public loginService: LoginService) { }
 
   ngOnInit(): void {
+    this.user = this.loginService.getUser();
+    this.isUserLoggedIn = this.loginService.isLoggedin();
+    this.loginService.loginStatusSubject.asObservable().subscribe(data => {
+      this.user = this.loginService.getUser();
+      this.isUserLoggedIn = this.loginService.isLoggedin();
+    })
   }
 
-  logout(){
+  logout() {
     this.loginService.logoutUser();
     location.reload();
+
   }
 
 }
